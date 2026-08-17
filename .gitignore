@@ -1,0 +1,7 @@
+venv/
+__pycache__/
+*.pyc
+.aes_key
+exam_security.db
+storage/*
+.env

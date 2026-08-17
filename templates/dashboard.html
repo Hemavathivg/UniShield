@@ -1,0 +1,37 @@
+{% extends "base.html" %}{% block content %}
+<h1>Examination Security Dashboard</h1>
+<div class="grid">
+<div class="card"><span class="icon">🔒</span><b>AES-256</b><small>Question paper encryption</small></div>
+<div class="card"><span class="icon">#</span><b>SHA-256</b><small>Integrity verification</small></div>
+<div class="card"><span class="icon">👤</span><b>Authentication</b><small>Authorized access only</small></div>
+<div class="card"><span class="icon">🚨</span><b>Leak Detection</b><small>Activity monitoring</small></div>
+</div>
+
+{% if session.get('role') == 'admin' %}
+<div class="card">
+<h2>Upload Question Paper</h2>
+<form action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
+<input type="file" name="paper" accept=".pdf,.docx,.txt" required>
+<button>Encrypt & Store Securely</button>
+</form>
+</div>
+{% endif %}
+
+<div class="card">
+<h2>Secure Question Papers</h2>
+<table><tr><th>Paper</th><th>Uploaded</th><th>Security</th><th>Action</th></tr>
+{% for p in papers %}
+<tr><td>{{p.filename}}</td><td>{{p.uploaded_at}}</td><td>🔒 AES · # SHA-256</td>
+<td><a class="btn" href="{{url_for('download', paper_id=p.id)}}">Decrypt & Open</a></td></tr>
+{% else %}<tr><td colspan="4">No papers uploaded yet.</td></tr>{% endfor %}
+</table>
+</div>
+
+<div class="card">
+<h2>Recent Activity</h2>
+<table><tr><th>User</th><th>Action</th><th>Status</th><th>Time</th></tr>
+{% for l in logs %}<tr><td>{{l.username}}</td><td>{{l.action}}</td><td>{{l.status}}</td><td>{{l.created_at}}</td></tr>{% endfor %}
+</table>
+{% if session.get('role') == 'admin' %}<a href="{{url_for('logs')}}">View full audit log →</a>{% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,6 @@
+{% extends "base.html" %}{% block content %}
+<div class="card"><h1>Audit & Leak Detection Logs</h1>
+<table><tr><th>User</th><th>Action</th><th>Paper ID</th><th>Status</th><th>IP</th><th>Time</th></tr>
+{% for l in logs %}<tr><td>{{l.username}}</td><td>{{l.action}}</td><td>{{l.paper_id or '-'}}</td><td>{{l.status}}</td><td>{{l.ip}}</td><td>{{l.created_at}}</td></tr>{% endfor %}
+</table></div>
+{% endblock %}
